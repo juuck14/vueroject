@@ -3,7 +3,7 @@ const index = (req, res) => {
 }
 
 const login = (req, res) => {
-    res.send("dorf2")
+    res.render("home/login")
 }
 
 
