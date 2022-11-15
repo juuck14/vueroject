@@ -1,37 +1,53 @@
+const fs = require('fs').promises;
 
 class UserStorage {
-    static #users = [
-        { id: "q", password: "123", name: "qqq" },
-        { id: "w", password: "123", name: "www" },
-        { id: "e", password: "qwe123", name: "eee" },
-        { id: "r", password: "qwe123!@#", name: "rrr" },
-    ];
+    static #getUserInfo(data, id) {
+        const users = JSON.parse(data)
+        const userInfo = users.filter(val => val.id === id)[0]
+        return userInfo ? userInfo : {}
+    }
 
-    static getUsers(...fields) {
-        const users = this.#users;
+    static #getUsers(data, isAll, fields) {
+        const users = JSON.parse(data)
+        if(isAll) return users;
+        
         const newUsers = users.map(val => {
             return fields.reduce((newUser, field) => {
                 if(Object.hasOwn(val, field)) newUser[field] = val[field];
                 return newUser
             }, {})
         })
-
+        
         return newUsers
+    }
+    
+    static async getUsers(isAll, ...fields) {
+        const data = await fs.readFile("./src/data/users.json");
+        return this.#getUsers(data, isAll, fields);
     }
 
     static getUserInfo(id) {
-        const users = this.#users;
-        const userInfo = users.filter(val => val.id === id)[0]
-        return userInfo ? userInfo : {}
+        return fs.readFile("./src/data/users.json")
+        .then(data => {
+            return this.#getUserInfo(data, id)
+        })
+        .catch(console.error)
     }
 
-    static save(userInfo) {
-        this.#users.push({
+    static async save(userInfo) {
+        const users = await this.getUsers(true);
+        if(users.map(val => val.id).includes(userInfo.id)){
+            throw "exist'ed";
+        }
+
+        users.push({
             id: userInfo.id,
             name: userInfo.name,
             password: userInfo.password,
         })
-        return { success: true }
+        fs.writeFile("./src/data/users.json", JSON.stringify(users))
+        return { success: true };
+
     }
 }
 

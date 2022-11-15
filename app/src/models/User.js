@@ -5,21 +5,27 @@ class User {
         this.body = body;
     }
 
-    login() {
+    async login() {
         const body = this.body
-        const { id, password } = UserStorage.getUserInfo(body.id)
+        const { id, password } = await UserStorage.getUserInfo(body.id)
+        
         if(id){
             if(id === body.id && password === body.password){
                 return { success: true };
             }
-            return { success: false, msg: "notmatched"}
+            return { success: false, msg: "notmatched" }
         }
         return { success: false, msg: "noided"}
 
     }
 
-    register() {
-        return UserStorage.save(this.body)
+    async register() {
+        try {
+            const response = await UserStorage.save(this.body)
+            return response
+        } catch (error) {
+            return { success: false, msg: error }
+        }
     }
 };
 
