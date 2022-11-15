@@ -7,8 +7,6 @@ class UserStorage {
         { id: "r", password: "qwe123!@#", name: "rrr" },
     ];
 
-
-
     static getUsers(...fields) {
         const users = this.#users;
         const newUsers = users.map(val => {
@@ -19,6 +17,12 @@ class UserStorage {
         })
 
         return newUsers
+    }
+
+    static getUserInfo(id) {
+        const users = this.#users;
+        const userInfo = users.filter(val => val.id === id)[0]
+        return userInfo ? userInfo : {}
     }
 }
 

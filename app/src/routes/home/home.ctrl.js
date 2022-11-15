@@ -1,6 +1,6 @@
 const e = require("express")
 
-const UserStorage = require('../../models/UserStorage')
+const User = require('../../models/User')
 
 const output = {
     index: (req, res) => {
@@ -13,23 +13,9 @@ const output = {
 
 const process = {
     login: (req, res) => {
-        const id = req.body.id,
-        password = req.body.password;
-
-        const users = UserStorage.getUsers("id", "password")
-        const response = {}
-        if(users.some((value) => {
-            console.log(value, id, password)
-            return value.id === id && value.password === password
-        })){
-            response.success = true
-        } else {
-            response.success = false;
-            response.msg = "failed"
-        }
-
-
-        return res.json(response)
+        const user = new User(req.body);
+        const response = user.login();
+        return res.json(response);
     }
 }
 
