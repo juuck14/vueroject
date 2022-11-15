@@ -6,16 +6,20 @@ class User {
     }
 
     async login() {
-        const body = this.body
-        const { id, password } = await UserStorage.getUserInfo(body.id)
-        
-        if(id){
-            if(id === body.id && password === body.password){
-                return { success: true };
+        try {
+            const body = this.body
+            const { id, password } = await UserStorage.getUserInfo(body.id)
+            
+            if(id){
+                if(id === body.id && password === body.password){
+                    return { success: true };
+                }
+                return { success: false, msg: "notmatched" }
             }
-            return { success: false, msg: "notmatched" }
+            return { success: false, msg: "noided"}
+        } catch (error) {
+            return { success: false, msg: error }
         }
-        return { success: false, msg: "noided"}
 
     }
 
