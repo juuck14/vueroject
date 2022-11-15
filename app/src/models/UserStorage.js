@@ -31,7 +31,7 @@ class UserStorage {
             name: userInfo.name,
             password: userInfo.password,
         })
-        console.log(this.#users)
+        return { success: true }
     }
 }
 

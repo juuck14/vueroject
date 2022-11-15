@@ -19,7 +19,7 @@ class User {
     }
 
     register() {
-        UserStorage.save(this.body)
+        return UserStorage.save(this.body)
     }
 };
 
