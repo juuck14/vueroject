@@ -17,6 +17,10 @@ class User {
         return { success: false, msg: "noided"}
 
     }
+
+    register() {
+        UserStorage.save(this.body)
+    }
 };
 
 module.exports = User;

@@ -24,6 +24,15 @@ class UserStorage {
         const userInfo = users.filter(val => val.id === id)[0]
         return userInfo ? userInfo : {}
     }
+
+    static save(userInfo) {
+        this.#users.push({
+            id: userInfo.id,
+            name: userInfo.name,
+            password: userInfo.password,
+        })
+        console.log(this.#users)
+    }
 }
 
 module.exports = UserStorage;
