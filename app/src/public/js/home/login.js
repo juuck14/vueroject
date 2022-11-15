@@ -1,5 +1,3 @@
-import { post } from "~/app";
-
 const id = document.querySelector("#id"),
 password = document.querySelector("#password"),
 loginBtn = document.querySelector("button");
@@ -16,6 +14,12 @@ const login = () => {
         },
         body: JSON.stringify(req),
     })
+    .then((res) => res.json())
+    .then(res => {
+        if(res.success) location.href = "/";
+        else alert(res.msg);
+    })
+    .catch(error => console.error(new Error("dorfed")))
 }
 
 loginBtn.addEventListener("click", login);

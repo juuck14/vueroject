@@ -10,6 +10,9 @@
 import Vue from 'vue'
 
 export default {
-    layout: 'client-layout'
+    layout: 'client-layout',
+    async asyncData({ app, query}) {
+      // const user = await app.$axios.$get(`/`)
+    }
 }
 </script>
